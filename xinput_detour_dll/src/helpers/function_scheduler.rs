@@ -23,13 +23,12 @@ impl ::std::fmt::Debug for ScheduledFunction {
 
 #[derive(PartialEq, Debug)]
 pub enum ScheduledFunctionState {
-  Ongoing,
+  Ongoing { next_end: SystemTime },
   Completed,
 }
 
 #[derive(Debug)]
 pub struct ScheduledFunctionStack {
-  next_end: SystemTime,
   state: ScheduledFunctionState,
   functions: Vec<ScheduledFunction>,
 }
@@ -37,32 +36,31 @@ pub struct ScheduledFunctionStack {
 impl ScheduledFunctionStack {
   pub fn new(functions: Vec<ScheduledFunction>) -> Self {
     Self {
-      next_end: SystemTime::now() + functions[0].duration,
+      state: ScheduledFunctionState::Ongoing { next_end: SystemTime::now() + functions[0].duration },
       functions,
-      state: ScheduledFunctionState::Ongoing
     }
   }
 
   pub fn poll(&mut self, controller_state: &MutableXInputState) -> ScheduledFunctionState {
-    // This check might not actually be needed but im too lazy to write tests so better safe than sorry
-    if self.functions.is_empty() { 
-      self.state = ScheduledFunctionState::Completed;
-      return ScheduledFunctionState::Completed; 
-    }
+    match self.state {
+      ScheduledFunctionState::Ongoing { next_end } => {
+        if SystemTime::now() < next_end {
+          (self.functions[0].func)(controller_state);
+          ScheduledFunctionState::Ongoing { next_end }
+        } else {
+          self.functions.remove(0);
 
-    if SystemTime::now() < self.next_end {
-      (self.functions[0].func)(controller_state);
-      ScheduledFunctionState::Ongoing
-    } else {
-      self.functions.remove(0);
-
-      if self.functions.is_empty() {
-        self.state = ScheduledFunctionState::Completed;
-        ScheduledFunctionState::Completed
-      } else {
-        self.next_end += self.functions[0].duration;
-        ScheduledFunctionState::Ongoing
-      }
+          if self.functions.is_empty() {
+            self.state = ScheduledFunctionState::Completed;
+            ScheduledFunctionState::Completed
+          } else {
+            let next_end = next_end + self.functions[0].duration;
+            self.state = ScheduledFunctionState::Ongoing { next_end };
+            ScheduledFunctionState::Ongoing { next_end }
+          }
+        }
+      },
+      ScheduledFunctionState::Completed => ScheduledFunctionState::Completed,
     }
   }
 }

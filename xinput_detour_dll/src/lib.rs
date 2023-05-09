@@ -52,7 +52,7 @@ fn xinput_get_state_detour(user_index: DWORD, state_ptr: *mut XINPUT_STATE) -> D
       let function_state = scheduled_functions[i].poll(&controller_state);
       match function_state {
         ScheduledFunctionState::Completed => completed.push(i),
-        ScheduledFunctionState::Ongoing => {},
+        _ => {},
       }
     }
 
