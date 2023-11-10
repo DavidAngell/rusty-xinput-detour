@@ -1,13 +1,16 @@
 use dll_syringe::{Syringe, process::OwnedProcess};
 use toy_arms::{detect_keypress, VirtualKeyCode};
 
+const EXE_NAME: &str = "RocketLeague";
+const DLL_NAME: &str = "rocket_league_hook.dll";
+
 fn main() {
     // find the target process by name
-    let target_process = OwnedProcess::find_first_by_name("RocketLeague").unwrap();
+    let target_process = OwnedProcess::find_first_by_name(EXE_NAME).unwrap();
     let syringe = Syringe::for_process(target_process);
 
     // inject the payload into the target process
-    let file_path = format!("{}/{}", env!("CARGO_MANIFEST_DIR"), "target/debug/deps/rocket_league_hook.dll");
+    let file_path = format!("{}/{}/{}", env!("CARGO_MANIFEST_DIR"), "target/debug/deps/", DLL_NAME);
     let mut injected_payload = syringe.inject(&file_path).unwrap();
 
     // if cfg!(debug_assertions) {
