@@ -9,7 +9,7 @@ crate-type = ["cdylib"]
 
 [dependencies]
 chrono = "0.4.24"
-detour = "0.8.1"
+retour = { version = "0.3", features = ["static-detour"] }
 dialog = "0.3.0"
 minhook-sys = "0.1.1"
 once_cell = "1.17.1"

@@ -2,7 +2,7 @@ use winapi::um::xinput::*;
 use winapi::shared::minwindef::DWORD;
 use super::mutable_xinput_state::*;
 use super::function_scheduler::*;
-use detour::static_detour;
+use retour::static_detour;
 
 // set up the detour for the XInputGetState function
 static_detour! {
