@@ -4,10 +4,15 @@ use winapi::um::xinput::*;
 use winapi::shared::minwindef::{BOOL, DWORD, HINSTANCE, LPVOID, TRUE};
 use once_cell::sync::Lazy;
 
-mod helpers;
-use helpers::mutable_xinput_state::MutableXInputState;
-use helpers::function_scheduler::*;
-use helpers::handle_controller_state::*;
+#[macro_use]
+mod function_scheduler;
+
+mod handle_controller_state;
+mod mutable_xinput_state;
+
+use mutable_xinput_state::MutableXInputState;
+use function_scheduler::*;
+use handle_controller_state::*;
 
 // type definition for the original XInputGetState function
 type XInputGetStateFunc = unsafe extern "system" fn(DWORD, *mut XINPUT_STATE) -> DWORD;
