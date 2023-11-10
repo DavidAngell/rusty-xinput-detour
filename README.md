@@ -2,7 +2,7 @@
 
 <!-- OVERVIEW -->
 # Rusty XInput Detour
-A program to detour the XInput dll injected into a game. Specifically, this repo uses Rocket League as the example game. It also provides a [function scheduler](xinput_detour_dll/src/function_scheduler.rs) which allows the user to pass delays for when an input should be run on the controller. Chaining such delays allows for th e simple creation of macro buttons on a controller.
+A program to detour the XInput dll injected into a game. Specifically, this repo uses Rocket League as the example game. It also provides a [function scheduler](xinput_detour_dll/src/function_scheduler.rs) which allows the user to pass delays for when an input should be run on the controller. Chaining such delays allows for the simple creation of macro buttons on a controller.
 
 <!-- RUNNING EXAMPLE -->
 ## Running Example
