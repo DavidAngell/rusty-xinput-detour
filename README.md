@@ -21,16 +21,12 @@ You will need Rust and Rocket League to view the example. [Rocket League is free
    git clone https://github.com/DavidAngell/rusty-xinput-detour
    cd rusty-xinput-detour/
    ```
-2. Install the nightly toolchain
-    ```sh
-    rustup toolchain install nightly-x86_64-pc-windows-msvc
-    ```
-3. Build the DLL
+2. Build the DLL
    ```sh
    cd xinput_detour_dll/
    cargo build
    ```
-4. Run the injector script (must be in the root directory)
+3. Run the injector script (must be in the root directory)
    ```sh
    cd ..
    cargo run
